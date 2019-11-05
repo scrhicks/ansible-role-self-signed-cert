@@ -1,0 +1,19 @@
+---
+
+- name: Download statically linked cfssl binary
+  get_url:
+    url: "https://pkg.cfssl.org/{{ cfssl.version }}/cfssl_{{ cfssl.os }}-{{ cfssl.os_arch }}"
+    dest: "/usr/local/bin/cfssl"
+    mode: 0755
+
+- name: Download statically linked cfssljson binary
+  get_url:
+    url: "https://pkg.cfssl.org/{{ cfssl.version }}/cfssljson_{{ cfssl.os }}-{{ cfssl.os_arch }}"
+    dest: "/usr/local/bin/cfssljson"
+    mode: 0755
+
+- name: Download statically linked cfssl-certinfo binary
+  get_url:
+    url: "https://pkg.cfssl.org/{{ cfssl.version }}/cfssljson_{{ cfssl.os }}-{{ cfssl.os_arch }}"
+    dest: "/usr/local/bin/cfssl-certinfo"
+    mode: 0755

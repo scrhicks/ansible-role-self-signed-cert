@@ -1,0 +1,5 @@
+---
+
+- name: Create CA Certificate
+  shell: "cfssl gencert -initca /tmp/ca-csr.json | cfssljson -bare {{ ssc.output_dir }}/ca -"
+  register: ca

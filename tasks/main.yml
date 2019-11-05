@@ -1,0 +1,31 @@
+---
+
+# - name: Install cfssl
+#   include: install_cfssl.yml
+
+- name: "Ensure {{ ssc.output_dir }} directory exists"
+  file:
+    state: directory
+    path: "{{ ssc.output_dir }}"
+
+- name: Copy CSR files
+  include: copy_csr_files.yml
+
+- name: Check if certs exists
+  include: check_certs_exists.yml
+
+- name: Generate CA Certificate
+  include: gen_ca_cert.yml
+  when: not ca_certs_exists
+
+- name: Generate Server Certificates
+  include: gen_certs.yml
+  vars:
+    profile: server
+  when: ca.changed or not server_certs_exists
+
+- name: Generate Client Certificates
+  include: gen_certs.yml
+  vars:
+    profile: client
+  when: ca.changed or not client_certs_exists

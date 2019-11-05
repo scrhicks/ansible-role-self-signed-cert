@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  become: yes
+  roles:
+    - ansible-role-self-signed-cert
+  vars:
+    cfssl:
+        version: 'R1.2'
+        os: linux
+        os_arch: amd64
+        
+    ssc:
+      output_dir: /vagrant/certs
+
+      server_expiry: 8760h
+      client_expiry: 8760h
+      
+      cn: example.com
+      hosts:
+        - example.com
+        - www.example.com
+        
+      key_algo: rsa
+      key_size: 4096
+
+      country: PL
+      location: Wroclaw
+      organisation: Pogosoftware
+      organisation_unit: DevOps
+      state: dolnoslaskie

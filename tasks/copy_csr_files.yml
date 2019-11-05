@@ -1,0 +1,10 @@
+---
+
+- name: Copy ca-config, cs-csr and cert-csr files
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{ item }}.json"
+  with_items:
+    - ca-config
+    - ca-csr
+    - cert-csr

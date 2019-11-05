@@ -1,0 +1,11 @@
+---
+
+- name: "Create {{ profile }} Key and Certificate"
+  shell: "cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=/tmp/ca-config.json -profile={{ profile }} /tmp/cert-csr.json | cfssljson -bare {{ ssc.output_dir }}/{{ profile }} -"
+  args:
+    chdir: "{{ ssc.output_dir }}"
+
+- name: "Generate {{ profile }} PFX Certificate"
+  shell: "openssl pkcs12 -export -out {{ profile }}.pfx -inkey {{ profile }}-key.pem -in {{ profile }}.pem -certfile ca.pem -passout pass:"
+  args:
+    chdir: "{{ ssc.output_dir }}"
