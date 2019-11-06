@@ -1,7 +1,7 @@
 ---
 
-# - name: Install cfssl
-#   include: install_cfssl.yml
+- name: Install cfssl
+  include: install_cfssl.yml
 
 - name: "Ensure {{ ssc.output_dir }} directory exists"
   file:
