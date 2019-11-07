@@ -1,16 +1,19 @@
 ---
 
 - name: "Create {{ profile }} Key and Certificate"
-  shell: "cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=/tmp/ca-config.json -profile={{ profile }} /tmp/cert-csr.json \
-    | cfssljson -bare {{ ssc.output_dir }}/{{ profile }} -"
-  when: 
-    ca.changed or (profile=='server' and not server_certs_exists) or (profile=='client' and not client_certs_exists)
+  shell: |
+    set -euxo pipefail
+    cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=/tmp/ca-config.json -profile={{ profile }} /tmp/cert-csr.json |
+    cfssljson -bare {{ ssc.output_dir }}/{{ profile }} -
   args:
     chdir: "{{ ssc.output_dir }}"
+    executable: /bin/bash
+  when:
+    ca.changed or (profile=='server' and not server_certs_exists) or (profile=='client' and not client_certs_exists)
 
 - name: "Generate {{ profile }} PFX Certificate"
-  shell: "openssl pkcs12 -export -out {{ profile }}.pfx -inkey {{ profile }}-key.pem -in {{ profile }}.pem -certfile ca.pem -passout pass:"
-  when: 
+  command: "openssl pkcs12 -export -out {{ profile }}.pfx -inkey {{ profile }}-key.pem -in {{ profile }}.pem -certfile ca.pem -passout pass:"
+  when:
     ca.changed or (profile=='server' and not server_certs_exists) or (profile=='client' and not client_certs_exists)
   args:
     chdir: "{{ ssc.output_dir }}"
