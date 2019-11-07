@@ -11,7 +11,7 @@ Role Variables
 * `self_signed_cert.server_expiry` - Time when the server certificate will be expired.
 * `self_signed_cert.client_expiry` - Time when the client certificate will be expired.
 * `self_signed_cert.cn` - Is used by some CAs to determine which domain the certificate is to be generated for instead.
-* `scc.hosts` - Is a list of the domain names which the certificate should be valid for.
+* `self_signed_cert.sans` - Is a list of the domain names which the certificate should be valid for.
 * `self_signed_cert.key_algo` - Algorithm name which will be used to generate the certificate.
 * `self_signed_cert.key_size` - Size of the key.
 * `self_signed_cert.country` - The coutry (C).
@@ -41,7 +41,7 @@ Example Playbook
       client_expiry: 8760h
       
       cn: example.com
-      hosts:
+      sans:
         - example.com
         - www.example.com
         

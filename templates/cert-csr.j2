@@ -1,7 +1,7 @@
 {
   "CN": "{{ self_signed_cert.cn }}",
   "hosts": [
-  {% for host in self_signed_cert.hosts %}
+  {% for host in self_signed_cert.sans %}
     "{{ host }}"{% if not loop.last %},{% endif %}
   {% endfor %}
   ],
