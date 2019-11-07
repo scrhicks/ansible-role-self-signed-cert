@@ -32,7 +32,7 @@
       server_certs_stats.results[0].stat.exists and
       server_certs_stats.results[1].stat.exists and
       server_certs_stats.results[2].stat.exists and
-      server_certs_stats.results[3].stat.exists}}"
+      server_certs_stats.results[3].stat.exists }}"
 
 - name: Get Client certs stats
   stat:
@@ -50,4 +50,4 @@
       client_certs_stats.results[0].stat.exists and
       client_certs_stats.results[1].stat.exists and
       client_certs_stats.results[2].stat.exists and
-      client_certs_stats.results[3].stat.exists}}"
+      client_certs_stats.results[3].stat.exists }}"
