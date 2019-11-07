@@ -1,5 +1,5 @@
 galaxy_info:
-  role_name: self-signed-cert
+  role_name: self_signed_cert
   author: Przemysław Pogorzelec
   description: This ansible role allows generating a self-signed certificates.
   company: Pogosoftware
@@ -14,4 +14,4 @@ galaxy_info:
       versions:
         - all
 
-  galaxy_tags: ['cfssl', 'self-signed', 'cert', 'certificate', 'pogosoftware']
+  galaxy_tags: ['cfssl', 'self', 'signed', 'cert', 'certificate', 'pogosoftware']
