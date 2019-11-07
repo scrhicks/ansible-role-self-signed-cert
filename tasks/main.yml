@@ -3,10 +3,10 @@
 - name: Install cfssl
   include: install_cfssl.yml
 
-- name: "Ensure {{ ssc.output_dir }} directory exists"
+- name: "Ensure {{ self_signed_cert.output_dir }} directory exists"
   file:
     state: directory
-    path: "{{ ssc.output_dir }}"
+    path: "{{ self_signed_cert.output_dir }}"
 
 - name: Copy CSR files
   include: copy_csr_files.yml

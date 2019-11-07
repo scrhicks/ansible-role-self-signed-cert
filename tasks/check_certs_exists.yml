@@ -2,7 +2,7 @@
 
 - name: Get CA certs stats
   stat:
-    path: "{{ ssc.output_dir }}/{{ item }}"
+    path: "{{ self_signed_cert.output_dir }}/{{ item }}"
   register: ca_certs_stats
   with_items:
     - ca-key.pem
@@ -18,7 +18,7 @@
 
 - name: Get Server certs stats
   stat:
-    path: "{{ ssc.output_dir }}/{{ item }}"
+    path: "{{ self_signed_cert.output_dir }}/{{ item }}"
   register: server_certs_stats
   with_items:
     - server-key.pem
@@ -36,7 +36,7 @@
 
 - name: Get Client certs stats
   stat:
-    path: "{{ ssc.output_dir }}/{{ item }}"
+    path: "{{ self_signed_cert.output_dir }}/{{ item }}"
   register: client_certs_stats
   with_items:
     - client-key.pem

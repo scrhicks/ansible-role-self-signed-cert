@@ -1,16 +1,16 @@
 {
-  "CN": "{{ ssc.cn }}",
+  "CN": "{{ self_signed_cert.cn }}",
   "key": {
-    "algo": "{{ ssc.key_algo }}",
-    "size": {{ ssc.key_size }}
+    "algo": "{{ self_signed_cert.key_algo }}",
+    "size": {{ self_signed_cert.key_size }}
   },
   "names": [
     {
-      "C": "{{ ssc.country }}",
-      "L": "{{ ssc.location }}",
-      "O": "{{ ssc.organisation }}",
-      "OU": "{{ ssc.organisation_unit }}",
-      "ST": "{{ ssc.state }}"
+      "C": "{{ self_signed_cert.country }}",
+      "L": "{{ self_signed_cert.location }}",
+      "O": "{{ self_signed_cert.organisation }}",
+      "OU": "{{ self_signed_cert.organisation_unit }}",
+      "ST": "{{ self_signed_cert.state }}"
     }
   ]
 }

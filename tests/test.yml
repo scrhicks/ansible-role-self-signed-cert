@@ -4,12 +4,11 @@
   roles:
     - ansible-role-self-signed-cert
   vars:
-    cfssl:
-        version: 'R1.2'
-        os: linux
-        os_arch: amd64
+    self_signed_cert:
+      cfssl_version: 'R1.2'
+      cfssl_os: linux
+      cfssl_os_arch: amd64
         
-    ssc:
       output_dir: /vagrant/certs
 
       server_expiry: 8760h

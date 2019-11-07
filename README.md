@@ -1,24 +1,24 @@
 Self Signed Cert
 =========
 
-This ansible role allows generating a self-signed certificates.
+This ansible role allows for generating self-signed certificates. As a result, it will generate 3 pem certificates with keys: ca, client and server. Additionally to that, it will also generate 2 pfx certificates for client and server.
 
 
 Role Variables
 --------------
 
-* `ssc.output_dir` - Directory where the certificates will be stored.
-* `ssc.server_expiry` - Time when the server certificate will be expired.
-* `ssc.client_expiry` - Time when the client certificate will be expired.
-* `ssc.cn` - Is used by some CAs to determine which domain the certificate is to be generated for instead.
+* `self_signed_cert.output_dir` - Directory where the certificates will be stored.
+* `self_signed_cert.server_expiry` - Time when the server certificate will be expired.
+* `self_signed_cert.client_expiry` - Time when the client certificate will be expired.
+* `self_signed_cert.cn` - Is used by some CAs to determine which domain the certificate is to be generated for instead.
 * `scc.hosts` - Is a list of the domain names which the certificate should be valid for.
-* `ssc.key_algo` - Algorithm name which will be used to generate the certificate.
-* `ssc.key_size` - Size of the key.
-* `ssc.country` - The coutry (C).
-* `ssc.location` - The locality or municipality (L).
-* `ssc.organisation` - The organisation (O).
-* `ssc.organisation_unit` - Organisational unit, such as the department responsible for owning the key; it can also be used for a "Doing Business As" (DBS) name (OU).
-* `ssc.state` - The state or province (ST).
+* `self_signed_cert.key_algo` - Algorithm name which will be used to generate the certificate.
+* `self_signed_cert.key_size` - Size of the key.
+* `self_signed_cert.country` - The coutry (C).
+* `self_signed_cert.location` - The locality or municipality (L).
+* `self_signed_cert.organisation` - The organisation (O).
+* `self_signed_cert.organisation_unit` - Organisational unit, such as the department responsible for owning the key; it can also be used for a "Doing Business As" (DBS) name (OU).
+* `self_signed_cert.state` - The state or province (ST).
 
 
 Example Playbook
@@ -28,14 +28,13 @@ Example Playbook
 - hosts: localhost
   become: yes
   roles:
-    - pogosoftware.self-signed-cert
+    - pogosoftware.self_signed_cert
   vars:
-    cfssl:
-        version: 'R1.2'
-        os: linux
-        os_arch: amd64
+    self_signed_cert:
+      cfssl_version: 'R1.2'
+      cfssl_os: linux
+      cfssl_os_arch: amd64
         
-    ssc:
       output_dir: /vagrant/certs
 
       server_expiry: 8760h
@@ -45,7 +44,7 @@ Example Playbook
       hosts:
         - example.com
         - www.example.com
-
+        
       key_algo: rsa
       key_size: 4096
 

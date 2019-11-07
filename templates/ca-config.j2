@@ -5,7 +5,7 @@
     },
     "profiles": {
       "server": {
-        "expiry": "{{ ssc.server_expiry }}",
+        "expiry": "{{ self_signed_cert.server_expiry }}",
         "usages": [
           "signing",
           "key encipherment",
@@ -14,7 +14,7 @@
         ]
       },
       "client": {
-        "expiry": "{{ ssc.client_expiry }}",
+        "expiry": "{{ self_signed_cert.server_expiry }}",
         "usages": [
           "signing",
           "key encipherment",
