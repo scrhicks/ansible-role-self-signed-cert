@@ -19,7 +19,7 @@ Role Variables
 * `self_signed_cert.organisation` - The organisation (O).
 * `self_signed_cert.organisation_unit` - Organisational unit, such as the department responsible for owning the key; it can also be used for a "Doing Business As" (DBS) name (OU).
 * `self_signed_cert.state` - The state or province (ST).
-
+* `self_signed_cert.trust_ca_cert` - Determinate if run update-ca-certificates or not.
 
 Example Playbook
 ----------------
@@ -53,4 +53,6 @@ Example Playbook
       organisation: Pogosoftware
       organisation_unit: DevOps
       state: dolnoslaskie
+
+      trust_ca_cert: true
 ```

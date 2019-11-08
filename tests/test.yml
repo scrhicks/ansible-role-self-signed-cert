@@ -9,6 +9,8 @@
       cfssl_os: linux
       cfssl_os_arch: amd64
         
+      trust_ca_cert: true
+
       output_dir: /vagrant/certs
 
       server_expiry: 8760h

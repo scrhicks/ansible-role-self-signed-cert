@@ -26,3 +26,6 @@
   include: gen_certs.yml
   vars:
     profile: client
+
+- name: Trust CA Certificate
+  include: trust_ca_cert.yml

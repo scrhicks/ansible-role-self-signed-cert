@@ -1,0 +1,9 @@
+---
+
+- name: Copy CA Certificates
+  copy:
+    src: "{{ self_signed_cert.output_dir }}/ca.pem"
+    dest: /usr/local/share/ca-certificates/ca_certs.crt
+  notify:
+    - update ca certificates
+  when: self_signed_cert.trust_ca_cert is defined and self_signed_cert.trust_ca_cert
