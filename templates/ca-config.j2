@@ -4,23 +4,16 @@
       "expiry": "168h"
     },
     "profiles": {
-      "server": {
-        "expiry": "{{ self_signed_cert.server_expiry }}",
+    {% for profile in selfSignedCerts.profiles -%}
+      "{{- profile.name }}": {
+        "expiry": "{{- profile.expirity }}",
         "usages": [
-          "signing",
-          "key encipherment",
-          "server auth",
-          "client auth"
+        {%- for usage in profile.usages -%}
+          "{{- usage }}"{% if not loop.last %},{{ '\n' -}}{% endif -%}
+        {%- endfor -%}
         ]
-      },
-      "client": {
-        "expiry": "{{ self_signed_cert.server_expiry }}",
-        "usages": [
-          "signing",
-          "key encipherment",
-          "client auth"
-        ]
-      }
+      }{% if not loop.last %},{% endif %}{{ '\n' -}}
+  {% endfor -%}
     }
   }
 }

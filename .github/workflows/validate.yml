@@ -1,0 +1,33 @@
+---
+
+name: Validate
+
+on:
+  push:
+    branches:
+      - master
+      - features/**
+      - releases/**
+  pull_request:
+    branches:
+      - master
+      - features/**
+      - releases/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Run ansible-lint
+      uses: docker://cytopia/ansible-lint
+      with:
+        args: .
+
+    - name: Run yamllint
+      uses: docker://cytopia/yamllint
+      with:
+        args: .
