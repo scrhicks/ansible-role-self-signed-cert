@@ -2,30 +2,79 @@
 - hosts: localhost
   become: yes
   roles:
-    - ansible-role-self-signed-cert
+    - self-signed-cert
   vars:
-    self_signed_cert:
-      cfssl_version: 'R1.2'
-      cfssl_os: linux
-      cfssl_os_arch: amd64
-        
-      trust_ca_cert: true
+    selfSignedCerts:
+      cfsslUrl: https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+      cfssljsonUrl: https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 
-      output_dir: /vagrant/certs
+      certDir: /etc/certs/
 
-      server_expiry: 8760h
-      client_expiry: 8760h
-      
-      cn: example.com
-      sans:
+      profiles:
+      - name: server
+        expirity: 8760h
+        usages:
+        - signing
+        - key encipherment
+        - server auth
+        - client auth
+      - name: client
+        expirity: 8760h
+        usages:
+        - signing
+        - key encipherment
+        - client auth
+
+      cas:
+      - name: example
+        cn: example.com
+        keyAlgo: rsa
+        keySize: 4096
+        country: PL
+        location: Wroclaw
+        organisation: Pogosoftware
+        organisationUnit: DevOps
+        state: dolnoslaskie
+        trustCaCert: true
+      - name: example2
+        cn: example2.com
+        keyAlgo: rsa
+        keySize: 4096
+        country: PL
+        location: Wroclaw
+        organisation: Pogosoftware
+        organisationUnit: DevOps
+        state: dolnoslaskie
+        trustCaCert: false
+
+      certificates:
+      - name: server
+        profile: server
+        caName: example
+        exportToPfx: true
+        cn: example.com
+        hosts:
         - example.com
         - www.example.com
-        
-      key_algo: rsa
-      key_size: 4096
-
-      country: PL
-      location: Wroclaw
-      organisation: Pogosoftware
-      organisation_unit: DevOps
-      state: dolnoslaskie
+        keyAlgo: rsa
+        keySize: 4096
+        country: PL
+        location: Wroclaw
+        organisation: Pogosoftware
+        organisationUnit: DevOps
+        state: dolnoslaskie
+      - name: client
+        profile: client
+        caName: example
+        exportToPfx: true
+        cn: example.com
+        hosts:
+        - example.com
+        - www.example.com
+        keyAlgo: rsa
+        keySize: 4096
+        country: PL
+        location: Wroclaw
+        organisation: Pogosoftware
+        organisationUnit: DevOps
+        state: dolnoslaskie

@@ -1,31 +1,13 @@
 ---
 
-- name: Install cfssl
+- name: Ensure cfssl tools are installed
   include: install_cfssl.yml
 
-- name: "Ensure {{ self_signed_cert.output_dir }} directory exists"
-  file:
-    state: directory
-    path: "{{ self_signed_cert.output_dir }}"
+- name: Ensure csr files are generated
+  include: generate_csr.yml
 
-- name: Copy CSR files
-  include: copy_csr_files.yml
+- name: Ensure ca certs are generated
+  include: generate_ca.yml
 
-- name: Check if certs exists
-  include: check_certs_exists.yml
-
-- name: Generate CA Certificate
-  include: gen_ca_cert.yml
-
-- name: Generate Server Certificates
-  include: gen_certs.yml
-  vars:
-    profile: server
-
-- name: Generate Client Certificates
-  include: gen_certs.yml
-  vars:
-    profile: client
-
-- name: Trust CA Certificate
-  include: trust_ca_cert.yml
+- name: Ensure certs are generated
+  include: generate_certs.yml

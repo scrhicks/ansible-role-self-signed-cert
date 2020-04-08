@@ -1,5 +1,10 @@
 {
   "CN": "{{ item.cn }}",
+  "hosts": [
+  {% for host in item.hosts %}
+    "{{ host }}"{% if not loop.last %},{% endif %}
+  {% endfor %}
+  ],
   "key": {
     "algo": "{{ item.keyAlgo }}",
     "size": {{ item.keySize }}

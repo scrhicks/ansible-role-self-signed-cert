@@ -1,0 +1,19 @@
+---
+
+- name: Create CA Certificate
+  shell: |
+    set -euxo pipefail
+    cfssl gencert -initca csr/{{ item.name }}-ca-csr.json | cfssljson -bare {{ item.name }}-ca -
+  args:
+    chdir: "{{ selfSignedCerts.certDir }}"
+    executable: /bin/bash
+  with_items: "{{ selfSignedCerts.cas }}"
+
+- name: Trust CA Certificates
+  copy:
+    src: "{{ selfSignedCerts.certDir }}/{{ item.name }}-ca.pem"
+    dest: /usr/local/share/ca-certificates/{{ item.name }}-ca.crt
+  notify:
+    - update ca certificates
+  when: item.trustCaCert is defined and item.trustCaCert
+  with_items: "{{ selfSignedCerts.cas }}"
