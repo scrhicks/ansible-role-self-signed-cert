@@ -16,7 +16,7 @@
 - name: Ensure ca csr files was generated
   template:
     src: ca-csr.j2
-    dest: "{{ self_signed_cert_dir }}csr/{{ item.name }}-ca-csr.json"
+    dest: "{{ self_signed_cert_dir }}csr/{{ item.name }}-csr.json"
   with_items: "{{ self_signed_cert_ca_certs }}"
   register: ca_csr_result
 
