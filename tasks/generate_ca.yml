@@ -5,7 +5,7 @@
     set -euxo pipefail
     cfssl gencert -initca csr/{{ item.csr_file_name }} | cfssljson -bare {{ item.cert_file_name }} -
   args:
-    chdir: "{{ selfSignedCerts.certDir }}"
+    chdir: "{{ self_signed_cert_dir }}"
     executable: /bin/bash
   with_items: "{{ ca_certs }}"
   register: ca_result
@@ -13,7 +13,7 @@
 
 - name: Trust CA Certificates
   copy:
-    src: "{{ selfSignedCerts.certDir }}/{{ item.cert_file_name }}.pem"
+    src: "{{ self_signed_cert_dir }}/{{ item.cert_file_name }}.pem"
     dest: /usr/local/share/ca-certificates/{{ item.cert_file_name }}.crt
   with_items: "{{ ca_certs }}"
   notify:
