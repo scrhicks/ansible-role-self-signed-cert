@@ -26,7 +26,7 @@
           - client auth
 
     self_signed_cert_ca_certs:
-      - name: example
+      - name: example-ca
         cn: example.com
         key_algo: rsa
         key_size: 2048
@@ -40,7 +40,7 @@
     self_signed_cert_certs:
       - name: server
         profile: server
-        ca_name: example
+        ca_name: example-ca
         export_to_pfx: true
         cn: example.com
         hosts:
@@ -55,7 +55,7 @@
         state: internet
       - name: client
         profile: client
-        ca_name: example
+        ca_name: example-ca
         export_to_pfx: true
         cn: example.com
         hosts:
