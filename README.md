@@ -4,22 +4,71 @@ Self Signed Cert
 This ansible role allows for generating self-signed certificates. As a result, it will generate 3 pem certificates with keys: ca, client and server. Additionally to that, it will also generate 2 pfx certificates for client and server.
 
 
-Role Variables
---------------
+## General variables
 
-* `self_signed_cert.output_dir` - Directory where the certificates will be stored.
-* `self_signed_cert.server_expiry` - Time when the server certificate will be expired.
-* `self_signed_cert.client_expiry` - Time when the client certificate will be expired.
-* `self_signed_cert.cn` - Is used by some CAs to determine which domain the certificate is to be generated for instead.
-* `self_signed_cert.sans` - Is a list of the domain names which the certificate should be valid for.
-* `self_signed_cert.key_algo` - Algorithm name which will be used to generate the certificate.
-* `self_signed_cert.key_size` - Size of the key.
-* `self_signed_cert.country` - The coutry (C).
-* `self_signed_cert.location` - The locality or municipality (L).
-* `self_signed_cert.organisation` - The organisation (O).
-* `self_signed_cert.organisation_unit` - Organisational unit, such as the department responsible for owning the key; it can also be used for a "Doing Business As" (DBS) name (OU).
-* `self_signed_cert.state` - The state or province (ST).
-* `self_signed_cert.trust_ca_cert` - Determinate if run update-ca-certificates or not.
+### Certificate dir
+```yaml
+self_signed_cert_dir: /etc/certs/
+```
+This is a directory where certificates will be saved.
+
+### cfssl and cfssl_json download url
+```yaml
+self_signed_cert_cfssl_url: https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+self_signed_cert_cfssl_json_url: https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+```
+You can specify which version of cfssl and cfssl_tool you want to download.
+
+## Profiles
+```yaml
+self_signed_cert_profiles:
+  - name: server
+    expirity: 8760h
+    usages:
+      - signing
+      - key encipherment
+      - server auth
+      - client auth
+```
+cfssl support multiple profiles. Each profiles has it own unique name. The expirity date determinates when the certificate generated using this profile will be expired. The usages determinates purpose of the certificate. Allowed values are:
+* Key Usages: signing, digital signature, content committment, key encipherment, key agreement, data encipherment, cert sign, crl sign, encipher only, decipher only,
+* Ext Key Usages: any, server auth, client auth, code signing, email protection, s/mime, ipsec end system, ipsec tunnel, ipsec user, timestamping, ocsp signing, microsoft sgc, netscape sgc
+ 
+## Certificate authority
+```yaml
+self_signed_cert_ca_certs:
+  - name: example-ca
+    cn: example.com
+    key_algo: rsa
+    key_size: 2048
+    country: EU
+    location: Internet
+    organisation: Example
+    organisation_unit: IT
+    state: internet
+    trust_ca_cert: false
+```
+Certificate authority `key_algo` can has one of values: ECDSA256, RSA. `trust_ca_cert` will inject ca certificated to the trusted root certificates.
+
+## Certificates
+```yaml
+self_signed_cert_certs:
+  - name: server
+    profile: server
+    ca_name: example-ca
+    export_to_pfx: true
+    cn: example.com
+    hosts:
+      - example.com
+      - www.example.com
+    key_algo: rsa
+    key_size: 2048
+    country: EU
+    location: Internet
+    organisation: Example
+    organisation_unit: IT
+    state: internet
+```
 
 Example Playbook
 ----------------
@@ -28,31 +77,69 @@ Example Playbook
 - hosts: localhost
   become: yes
   roles:
-    - pogosoftware.self_signed_cert
+    - self-signed-cert
   vars:
-    self_signed_cert:
-      cfssl_version: 'R1.2'
-      cfssl_os: linux
-      cfssl_os_arch: amd64
-        
-      output_dir: /vagrant/certs
+    self_signed_cert_cfssl_url: https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+    self_signed_cert_cfssl_json_url: https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 
-      server_expiry: 8760h
-      client_expiry: 8760h
-      
-      cn: example.com
-      sans:
-        - example.com
-        - www.example.com
-        
-      key_algo: rsa
-      key_size: 4096
+    self_signed_cert_dir: /etc/certs/
 
-      country: PL
-      location: Wroclaw
-      organisation: Pogosoftware
-      organisation_unit: DevOps
-      state: dolnoslaskie
+    self_signed_cert_profiles:
+      - name: server
+        expirity: 8760h
+        usages:
+          - signing
+          - key encipherment
+          - server auth
+          - client auth
+      - name: client
+        expirity: 8760h
+        usages:
+          - signing
+          - key encipherment
+          - client auth
 
-      trust_ca_cert: true
+    self_signed_cert_ca_certs:
+      - name: example-ca
+        cn: example.com
+        key_algo: rsa
+        key_size: 2048
+        country: EU
+        location: Internet
+        organisation: Example
+        organisation_unit: IT
+        state: internet
+        trust_ca_cert: false
+
+    self_signed_cert_certs:
+      - name: server
+        profile: server
+        ca_name: example-ca
+        export_to_pfx: true
+        cn: example.com
+        hosts:
+          - example.com
+          - www.example.com
+        key_algo: rsa
+        key_size: 2048
+        country: EU
+        location: Internet
+        organisation: Example
+        organisation_unit: IT
+        state: internet
+      - name: client
+        profile: client
+        ca_name: example-ca
+        export_to_pfx: true
+        cn: example.com
+        hosts:
+          - example.com
+          - www.example.com
+        key_algo: rsa
+        key_size: 2048
+        country: EU
+        location: Internet
+        organisation: Example
+        organisation_unit: IT
+        state: internet
 ```
