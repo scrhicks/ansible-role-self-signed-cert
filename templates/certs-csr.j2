@@ -6,15 +6,15 @@
   {% endfor %}
   ],
   "key": {
-    "algo": "{{ item.keyAlgo }}",
-    "size": {{ item.keySize }}
+    "algo": "{{ item.key_algo }}",
+    "size": {{ item.key_size }}
   },
   "names": [
     {
       "C": "{{ item.country }}",
       "L": "{{ item.location }}",
       "O": "{{ item.organisation }}",
-      "OU": "{{ item.organisationUnit }}",
+      "OU": "{{ item.organisation_unit }}",
       "ST": "{{ item.state }}"
     }
   ]

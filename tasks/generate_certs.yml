@@ -4,24 +4,24 @@
   shell: |
     set -euxo pipefail
     cfssl gencert \
-      -ca={{ item.caName }}-ca.pem \
-      -ca-key={{ item.caName }}-ca-key.pem \
+      -ca={{ item.ca_name }}-ca.pem \
+      -ca-key={{ item.ca_name }}-ca-key.pem \
       -config=csr/ca-config.json \
       -profile={{ item.profile }} csr/{{ item.name }}-csr.json | cfssljson -bare {{ item.name }} -
   args:
-    chdir: "{{ selfSignedCerts.certDir }}"
+    chdir: "{{ self_signed_cert_dir }}"
     executable: /bin/bash
-  with_items: "{{ selfSignedCerts.certificates }}"
-  when: ca_changed[item.caName + '-ca']
+  with_items: "{{ self_signed_cert_certs }}"
+  when: ca_changed[item.ca_name + '-ca']
 
 - name: "Export to pfx file"
   command: "openssl pkcs12 -export \
     -out {{ item.name }}.pfx \
     -inkey {{ item.name }}-key.pem \
     -in {{ item.name }}.pem \
-    -certfile {{ item.caName }}-ca.pem \
+    -certfile {{ item.ca_name }}-ca.pem \
     -passout pass:"
   args:
-    chdir: "{{ selfSignedCerts.certDir }}"
-  when: ca_changed[item.caName + '-ca'] and item.exportToPfx
-  with_items: "{{ selfSignedCerts.certificates }}"
+    chdir: "{{ self_signed_cert_dir }}"
+  when: ca_changed[item.ca_name + '-ca'] and item.export_to_pfx
+  with_items: "{{ self_signed_cert_certs }}"
