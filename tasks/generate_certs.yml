@@ -12,6 +12,7 @@
     chdir: "{{ selfSignedCerts.certDir }}"
     executable: /bin/bash
   with_items: "{{ selfSignedCerts.certificates }}"
+  when: ca_changed[item.caName + '-ca']
 
 - name: "Export to pfx file"
   command: "openssl pkcs12 -export \
@@ -22,5 +23,5 @@
     -passout pass:"
   args:
     chdir: "{{ selfSignedCerts.certDir }}"
-  when: item.exportToPfx
+  when: ca_changed[item.caName + '-ca'] and item.exportToPfx
   with_items: "{{ selfSignedCerts.certificates }}"
