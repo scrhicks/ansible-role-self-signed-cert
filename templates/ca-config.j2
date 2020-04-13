@@ -4,7 +4,7 @@
       "expiry": "168h"
     },
     "profiles": {
-    {% for profile in selfSignedCerts.profiles -%}
+    {% for profile in self_signed_cert_profiles -%}
       "{{- profile.name }}": {
         "expiry": "{{- profile.expirity }}",
         "usages": [
