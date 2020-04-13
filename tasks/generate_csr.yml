@@ -11,15 +11,18 @@
   template:
     src: ca-config.j2
     dest: "{{ selfSignedCerts.certDir }}csr/ca-config.json"
+  register: ca_config_result
 
 - name: Ensure ca csr files was generated
   template:
     src: ca-csr.j2
     dest: "{{ selfSignedCerts.certDir }}csr/{{ item.name }}-ca-csr.json"
   with_items: "{{ selfSignedCerts.cas }}"
+  register: ca_csr_result
 
 - name: Ensure certs csr files was generated
   template:
     src: certs-csr.j2
     dest: "{{ selfSignedCerts.certDir }}csr/{{ item.name }}-csr.json"
   with_items: "{{ selfSignedCerts.certificates }}"
+  register: ca_cert_result

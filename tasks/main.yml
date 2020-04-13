@@ -6,8 +6,44 @@
 - name: Ensure csr files are generated
   include: generate_csr.yml
 
+- name: Stat - Check if  CA Certificate exists
+  stat:
+    path: "{{ selfSignedCerts.certDir }}{{ item.name }}-ca.pem"
+  with_items:
+    - "{{ selfSignedCerts.cas }}"
+  register: ca_stat
+
+- name: Stat - Check if CA Certificate Key exists
+  stat:
+    path: "{{ selfSignedCerts.certDir }}{{ item.name }}-ca-key.pem"
+  with_items:
+    - "{{ selfSignedCerts.cas }}"
+  register: ca_key_stat
+
+- name: Fact - Get CA Certificates
+  set_fact:
+    ca_certs: "{{ ca_certs|default([]) + [ {
+      'csr_file_changed': item[2].changed,
+      'csr_file_name': item[2].dest | basename,
+      'cert_file_exists': item[0].stat.exists,
+      'cert_file_name': (item[0].invocation.module_args.path | basename | splitext)[0],
+      'cert_key_file_exists': item[1].stat.exists,
+      'cert_ca_trust': item[3].trustCaCert | default(false)
+      } ] }}"
+  with_together:
+    - "{{ ca_stat.results }}"
+    - "{{ ca_key_stat.results }}"
+    - "{{ ca_csr_result.results }}"
+    - "{{ selfSignedCerts.cas }}"
+
 - name: Ensure ca certs are generated
   include: generate_ca.yml
+
+- name: Populate dict
+  set_fact:
+    ca_changed: "{{ ca_changed|default({}) | combine( { item.item.cert_file_name: item.changed } ) }}"
+  with_items:
+    - "{{ ca_result.results }}"
 
 - name: Ensure certs are generated
   include: generate_certs.yml

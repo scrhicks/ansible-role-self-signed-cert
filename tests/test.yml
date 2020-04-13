@@ -26,17 +26,17 @@
         - client auth
 
       cas:
-      - name: example
+      - name: example5
         cn: example.com
         keyAlgo: rsa
         keySize: 4096
-        country: PL
+        country: EU
         location: Wroclaw
         organisation: Pogosoftware
         organisationUnit: DevOps
         state: dolnoslaskie
-        trustCaCert: true
-      - name: example2
+        trustCaCert: false
+      - name: example3
         cn: example2.com
         keyAlgo: rsa
         keySize: 4096
@@ -50,7 +50,7 @@
       certificates:
       - name: server
         profile: server
-        caName: example
+        caName: example5
         exportToPfx: true
         cn: example.com
         hosts:
@@ -65,7 +65,7 @@
         state: dolnoslaskie
       - name: client
         profile: client
-        caName: example
+        caName: example3
         exportToPfx: true
         cn: example.com
         hosts:
