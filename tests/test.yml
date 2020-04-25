@@ -53,6 +53,18 @@
         organisation: Example
         organisation_unit: IT
         state: internet
+      - name: server-without-hosts
+        profile: server
+        ca_name: example-ca
+        export_to_pfx: true
+        cn: example.com
+        key_algo: rsa
+        key_size: 2048
+        country: EU
+        location: Internet
+        organisation: Example
+        organisation_unit: IT
+        state: internet
       - name: client
         profile: client
         ca_name: example-ca
